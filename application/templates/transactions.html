@@ -11,8 +11,11 @@
             <h1>Transactions</h1>
         </div>
         {% for t in data %}
-            <div style="border: 1px solid black; background-color: #EEE; word-wrap: break-word;">
+            <div style="border: 1px solid black; background-color: {{ '#84ff6f' if t.vid in current_owner else '#EEE' }}; word-wrap: break-word;">
                 <p style="font-size: 60%;">{{ t.id }}</p>
+                {% if t.vid in current_owner %}
+                    Current Owner<br>
+                {% endif %}
                 {{ t.timestamp.strftime('%d-%b-%y %H:%M:%S') }} UTC
                 <br>
                 <b>Cost: </b>{{ t.get_formatted_cost() }}

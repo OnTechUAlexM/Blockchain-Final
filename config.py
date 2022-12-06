@@ -28,7 +28,6 @@ class Config:
 class Logging:
     """ Logging configuration """
 
-    FILENAME = 'app.log'
     LEVEL = logging.INFO
     FORMAT = '%(asctime)s - %(levelname)s - %(message)s'
     DATE_FORMAT = '%d-%b-%y %H:%M:%S'

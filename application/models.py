@@ -22,11 +22,6 @@ class User(UserMixin, db.Model):
         unique=False,
         nullable=False
     )
-    confirmed_email = db.Column(
-        db.Boolean,
-        unique=False,
-        default=False
-    )
     is_vendor = db.Column(
         db.Boolean,
         default=False,
@@ -50,6 +45,7 @@ class User(UserMixin, db.Model):
 
 
 class Wallet(db.Model):
+    """ User wallet model"""
     __tablename__ = 'wallets'
 
     id = db.Column(
@@ -81,6 +77,7 @@ class Wallet(db.Model):
 
 
 class Vehicle(db.Model):
+    """ Vehicle data model """
     __tablename__ = 'vehicles'
 
     id = db.Column(
@@ -105,6 +102,10 @@ class Vehicle(db.Model):
         db.String(),
         nullable=False
     )
+    year = db.Column(
+        db.String(4),
+        nullable=False
+    )
     condition = db.Column(
         db.String(),
         nullable=False
@@ -127,6 +128,7 @@ class Vehicle(db.Model):
         )
     )
 
+
     def get_formatted_mileage(self):
         return "{:0,.2f}".format(self.mileage)
 
@@ -135,6 +137,7 @@ class Vehicle(db.Model):
 
 
 class Transaction(db.Model):
+    """ Transaction data model """
     __tablename__ = 'transactions'
     id = db.Column(
         db.String(128),

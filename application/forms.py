@@ -3,7 +3,6 @@ from wtforms import StringField, SubmitField, PasswordField, FloatField, HiddenF
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, InputRequired
 from flask_login import current_user
 from .models import db, Wallet, Vehicle
-import re
 
 
 class CostField(FloatField):
@@ -82,6 +81,13 @@ class AddVehicleForm(FlaskForm):
         validators=[
             DataRequired(),
             Length(max=50)
+        ]
+    )
+    year = StringField(
+        'Year',
+        validators=[
+            DataRequired(),
+            Length(min=4, max=5)
         ]
     )
     condition = StringField(

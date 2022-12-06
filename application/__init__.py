@@ -29,11 +29,13 @@ def create_app():
     from .models import User, Vehicle, Transaction, Wallet
     """ Init application """
 
+    # Create flask app
     logger.info("Initiating Flask app...")
     app = Flask(__name__, instance_relative_config=False)
     app.config.from_object('config.Config')
     logger.info("Done.")
 
+    # Initializing plugin objects
     logger.info("Initializing plugins...")
     logger.info("Database...")
     db.init_app(app)
@@ -43,6 +45,7 @@ def create_app():
     bootstrap.init_app(app)
     logger.info("Done.")
 
+    # In app context for asynchronous handling of requests
     with app.app_context():
         # Routes
         from . import routes, auth
@@ -51,10 +54,11 @@ def create_app():
         app.register_blueprint(routes.main_bp)
         app.register_blueprint(auth.auth_bp)
 
+        # Reason for non-persistence
         db.drop_all()
-
         db.create_all()
 
+        # Preload users
         u = User(
             email='user@gmail.com'
         )
@@ -71,11 +75,13 @@ def create_app():
 
         uvid = User.query.filter_by(email='vendor@gmail.com').first()
 
+        # Preload vehicles
         v = Vehicle(
             uid=uvid.id,
             vin='1234567543',
             make='Ford',
             model='Fiesta',
+            year='2003',
             condition='In Repair',
             mileage=150_000.0,
             cost=5000
@@ -85,6 +91,7 @@ def create_app():
             vin='7654324565',
             make='Ford',
             model='Focus',
+            year='2012',
             condition='New',
             mileage=150.0,
             cost=12000
@@ -94,6 +101,7 @@ def create_app():
             vin='345673272312',
             make='Chevy',
             model='Cruise',
+            year='2008',
             condition='New',
             mileage=17.0,
             cost=8000
@@ -103,9 +111,10 @@ def create_app():
 
         uid = User.query.filter_by(email='user@gmail.com').first()
 
+        # Init wallet
         w = Wallet(
             uid=uid.id,
-            amt=100_000.00
+            amt=10_000.00
         )
         db.session.add(w)
         db.session.commit()

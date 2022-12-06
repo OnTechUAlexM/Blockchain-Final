@@ -49,11 +49,12 @@ class Blockchain:
         return block
 
     # Add a transaction
-    def add_transaction(self, sender, recipient, cost, vin, make: str, model: str, condition: str, mileage: float):
+    def add_transaction(self, sender, recipient, cost, vin, make: str, model: str, year: str, condition: str, mileage: float):
         self.transactions.append({
             'vin': vin,
             'make': make,
             'model': model,
+            'year': year,
             'condition': condition,
             'mileage': mileage,
             'cost': cost,

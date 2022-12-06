@@ -72,19 +72,22 @@ def signup():
         existing_user = User.query.filter_by(email=form.email.data).first()
 
         if not existing_user:
+            # Create user account
             user = User(
                 email=form.email.data
             )
 
+            # Sets password using sha256
             user.set_password(form.password.data)
             db.session.add(user)
             db.session.commit()
             login_user(user)
 
+            # Initializes user wallet
             u = User.query.filter_by(user.email).first()
             w = Wallet(
                 uid=u.id,
-                amt=0.0
+                amt=5000.0
             )
             db.session.add(w)
             db.session.commit()

@@ -70,7 +70,7 @@
       {% for d in v_data %}
         {% if is_vendor == True %}
             <div style="border: 1px solid black; margin-top: 15px; margin-bottom: 15px; background-color: #DDD">
-                <p><b>{{ d.make }} {{ d.model }}</b></p>
+                <p><b>{{ d.year }} {{ d.make }} {{ d.model }}</b></p>
                 <b>VIN: </b>{{ d.vin }}
                 <br>
                 <b>Mileage: </b>{{ d.get_formatted_mileage() }}
@@ -82,7 +82,7 @@
         {% else %}
           <div id="purchase-vehicle" class="purchase-vehicle">
             <input class="vid" type="hidden" value="{{ d.id }}">
-            <h3>{{ d.make }} {{ d.model }}</h3>
+            <h3>{{ d.year }} {{ d.make }} {{ d.model }}</h3>
             <p><b>Mileage: </b>{{ d.get_formatted_mileage() }}</p>
             <p><b>Condition: </b>{{ d.condition }}</p>
             <h4 class="cost">Cost: {{ d.get_formatted_cost() }}</h4>
