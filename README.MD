@@ -1,4 +1,11 @@
-Final Project for Blockchain
+**Starting The Application**
+-
+To start the application, all you need
+to do is start the python file named `wsgi.py`
+
+The application will be hosted on your local host
+on port `5000` by default. This application
+is not meant to be a production-level web application.
 
 **Pre-loaded data:**
 -
