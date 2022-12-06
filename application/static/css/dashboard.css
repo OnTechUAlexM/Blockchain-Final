@@ -1,0 +1,11 @@
+.purchase-vehicle {
+    border: 1px solid black;
+    background-color: #DDD;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.purchase-vehicle:hover {
+    cursor: pointer;
+    background-color: #EEE;
+}

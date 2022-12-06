@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Chain{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('main_bp.dashboard', type=type) }}">< Dashboard</a>
+<div style="justify-content: center; padding-left: 20%; padding-right: 20%">
+  <div class="chain-container">
+    <div class="d-flex justify-content-center">
+      <h1>Current Blockchain</h1>
+    </div>
+    <div>
+      {% for block in chain_list %}
+        <div>
+          <h3>{{ block['index'] }}</h3>
+          <p>{{ block['timestamp'] }}</p>
+          <p>{{ block['prev_hash'] }}</p>
+          <p>{{ block['nonce'] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

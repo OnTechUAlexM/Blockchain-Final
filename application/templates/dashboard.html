@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div id="modal" class="modal fade" tabindex="-1" aria-labelledby="Test modal label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    {{ "Add Vehicle" if is_vendor == True else "Confirm Purchase" }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ render_form(form, id='form-accept') }}
+                {% if is_vendor == False %}
+                  <p><b>Current Funds: </b>{{ wallet.get_formatted_amt() }}</p>
+                  <p class="modal-cost"></p>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-purchase" type="submit" class="btn btn-primary" form="form-accept">
+                  {{ "Submit" if is_vendor == True else "Confirm Purchase" }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-please-wait" class="modal fade" tabindex="-2" aria-labelledby="Test modal label2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Thankyou For Your Purchase
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Please wait for your purchase to be added to the blockchain. This process could take a few minutes.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="justify-content: center; padding-left: 20%; padding-right: 20%">
+    <a href="{{ url_for('main_bp.logout') }}">Logout</a>
+    <a style="margin-left: 50px;" href="{{ url_for('main_bp.chain') }}">View Chain</a>
+    {% if is_vendor == True %}
+        <button style="float: right" class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal">Add Vehicle</button>
+    {% endif %}
+  <div class="chain-container">
+    <div class="d-flex justify-content-center">
+      <h1 >{{ "Inventory" if is_vendor == True else "Available to Purchase" }}</h1>
+    </div>
+    <div class="d-flex justify-content-center">
+      <a href="{{ url_for('main_bp.transactions') }}">View Transactions</a>
+    </div>
+    <div>
+      {% for d in v_data %}
+        {% if is_vendor == True %}
+            <div style="border: 1px solid black; margin-top: 15px; margin-bottom: 15px; background-color: #DDD">
+                <p><b>{{ d.make }} {{ d.model }}</b></p>
+                <b>VIN: </b>{{ d.vin }}
+                <br>
+                <b>Mileage: </b>{{ d.get_formatted_mileage() }}
+                <br>
+                <b>Condition: </b>{{ d.condition }}
+                <br>
+                <b>Cost: </b>{{ d.get_formatted_cost() }}
+            </div>
+        {% else %}
+          <div id="purchase-vehicle" class="purchase-vehicle">
+            <input class="vid" type="hidden" value="{{ d.id }}">
+            <h3>{{ d.make }} {{ d.model }}</h3>
+            <p><b>Mileage: </b>{{ d.get_formatted_mileage() }}</p>
+            <p><b>Condition: </b>{{ d.condition }}</p>
+            <h4 class="cost">Cost: {{ d.get_formatted_cost() }}</h4>
+          </div>
+        {% endif %}
+      {% endfor %}
+        <button id="test-show" type="button" hidden data-toggle="modal" data-target="#modal-please-wait"> </button>
+        <button id="show-pvi" type="button" hidden data-toggle="modal" data-target="#modal"> </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+    {% if is_vendor == False %}
+    $(document).on('mousedown', '#purchase-vehicle', function() {
+        var vid = $(this).children('.vid').val();
+        var cost = $(this).children('h4.cost').text().slice(6);
+        var html = "<b>Cost: </b>" + cost;
+        $('#vid').val(vid);
+        $('.modal-cost').html(html);
+        $('#show-pvi').click();
+    });
+    $(document).on('submit', '#form-accept', function() {
+        $('#confirm-purchase').attr('disabled', true);
+        $('button#test-show').click();
+    });
+    {% endif %}
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title%}Transactions{% endblock %}
+
+
+{% block content %}
+<a href="{{ url_for('main_bp.dashboard', type=type) }}">< Dashboard</a>
+<div class="d-flex justify-content-center">
+    <div style="width: 60%">
+        <div class="d-flex justify-content-center">
+            <h1>Transactions</h1>
+        </div>
+        {% for t in data %}
+            <div style="border: 1px solid black; background-color: #EEE; word-wrap: break-word;">
+                <p style="font-size: 60%;">{{ t.id }}</p>
+                {{ t.timestamp.strftime('%d-%b-%y %H:%M:%S') }} UTC
+                <br>
+                <b>Cost: </b>{{ t.get_formatted_cost() }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+<script>
+$(document).on('click', '.close', function() {
+    $(this).closest('div').remove();
+});
+</script>
+{% endblock %}

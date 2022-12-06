@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Signup{% endblock %}
+
+{% block content %}
+<div style="justify-content: center; padding-left: 20%; padding-right: 20%">
+  <div class="signup-container">
+    <div class="d-flex justify-content-center">
+      <h1>Sign Up</h1>
+    </div>
+    <div>
+      {{ render_form(form) }}
+      <p>Already have an account? <a href="{{ url_for('auth_bp.login') }}">Login</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}
